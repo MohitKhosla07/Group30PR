@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+
 
 
 get_ipython().system('pip install pyspark')
 
 
-# In[ ]:
+
 
 
 from pyspark.sql import SparkSession
@@ -24,13 +24,13 @@ from pyspark.sql.types import DoubleType, IntegerType
 from pyspark.ml.feature import VectorAssembler,OneHotEncoder, StringIndexer
 
 
-# In[ ]:
+
 
 
 spark = SparkSession.builder.appName("Spark").getOrCreate()
 
 
-# In[ ]:
+
 
 
 file_location = "C:\\Users\\shivs\\Desktop\\ZFINALPROJECT\\used_cars_data (1).csv"
@@ -45,7 +45,7 @@ delimiter = ","
 data = spark.read.format(file_type)   .option("inferSchema", infer_schema)   .option("header", first_row_is_header)   .option("sep", delimiter)   .load(file_location)
 
 
-# In[ ]:
+
 
 
 file_location = "transmission_csv.csv"
@@ -61,7 +61,7 @@ transmission1 = spark.read.format(file_type)   .option("inferSchema", infer_sche
 #transmission1.show()
 
 
-# In[ ]:
+
 
 
 file_location = "bodytype_csv.csv"
@@ -77,7 +77,7 @@ bodytype1 = spark.read.format(file_type)   .option("inferSchema", infer_schema) 
 #bodytype1.show(truncate=False)
 
 
-# In[ ]:
+
 
 
 file_location = "fueltype_csv.csv"
@@ -93,7 +93,7 @@ fueltype1 = spark.read.format(file_type)   .option("inferSchema", infer_schema) 
 #fueltype1.show(truncate=False)
 
 
-# In[ ]:
+
 
 
 file_location = "wheelsystem_csv.csv"
@@ -110,7 +110,7 @@ wheelsystem1 = spark.read.format(file_type)   .option("inferSchema", infer_schem
 #wheelsystem1.show()
 
 
-# In[ ]:
+
 
 
 file_location = "enginetype_csv.csv"
@@ -127,44 +127,44 @@ enginetype1 = spark.read.format(file_type)   .option("inferSchema", infer_schema
 #enginetype1.show()
 
 
-# In[ ]:
+
 
 
 type(data)
 
 
-# In[ ]:
+
 
 
 data.count()
 
 
-# In[ ]:
+
 
 
 len(data.columns)
 
 
-# In[ ]:
+
 
 
 data.printSchema()
 
 
-# In[ ]:
+
 
 
 from pyspark.sql.functions import isnull, when, count, col
 data.select([count(when(isnull(c), c)).alias(c) for c in data.columns]).show()
 
 
-# In[ ]:
+
 
 
 data.columns
 
 
-# In[ ]:
+
 
 
 df=data.drop('vin','bed','bed_height','bed_length','cabin','exterior_color','fleet','frame_damaged',
@@ -177,19 +177,18 @@ df=data.drop('vin','bed','bed_height','bed_length','cabin','exterior_color','fle
          'listing_color','city', 'model_name', 'listed_date','major_options')
 
 
-# In[ ]:
 
 
 len(df.columns)
 
 
-# In[ ]:
+
 
 
 df.printSchema()
 
 
-# In[ ]:
+
 
 
 #WIDTH
@@ -207,10 +206,11 @@ wid10=wid9.withColumn('width',col('width')).na.fill(73)
 # wid10.groupby('width').count().sort('count', ascending=False).collect()
 
 
-# In[ ]:
+
 
 
 #IS_NEW
+
 is_n1=wid10.withColumn('is_new', regexp_replace('is_new', '(TRUE)', '1'))
 is_n2=is_n1.withColumn('is_new', regexp_replace('is_new', '(FALSE)', '0'))
 is_n3=is_n2.withColumn('is_new', regexp_replace('is_new', '[^0-1]', '0'))
@@ -223,15 +223,13 @@ is_n7=is_n6.withColumn('is_new', col('is_new')).na.fill('TRUE')
 
 #savings_amount
 
-
-sa1 = sr8.withColumn('savings_amount', regexp_replace('savings_amount', '(\d+)', '0'))
-sa1.groupby('savings_amount').count().sort('count', ascending=False).collect()
+#sa1 = is_n7.withColumn('savings_amount', regexp_replace('savings_amount', '(\d+)', '0'))
+#sa1.groupby('savings_amount').count().sort('count', ascending=False).collect()
 
 
 #dealer_zip
 
-
-dea1=sr8.withColumn('dealer_zip', regexp_replace('dealer_zip', '(^[A-Za-z]+)', '43228'))
+dea1=is_n7.withColumn('dealer_zip', regexp_replace('dealer_zip', '(^[A-Za-z]+)', '43228'))
 dea2=dea1.withColumn('dealer_zip', regexp_replace('dealer_zip', '[^(\d{3,6})]', '43228'))
 dea3=dea2.withColumn("dealer_zip", col("dealer_zip")).na.fill('43228')
 dea4=dea3.withColumn("dealer_zip",col("dealer_zip").cast("double"))
@@ -328,17 +326,18 @@ sr7=sr6.withColumn('seller_rating',col('seller_rating').cast('double'))
 sr8=sr7.withColumn('seller_rating', col('seller_rating')).na.fill(4)
 
 
+pri1=sr8.filter(col("price").rlike("^[0-9]{3,8}+$"))
+pri2=pri1.withColumn("price",col("price").cast("double"))
 
-#fran1=list_col1.withColumn('franchise_make', regexp_replace('franchise_make', '(Ford|Chevrolet|Honda|Toyota|Jeep|Hyundai|Nissan|Kia|Subaru|Buick|Volkswagen|Mazda|BMW|GMC|Mercedes-Benz|Volvo|Audi|Cadillac|Dodge|Mitsubishi|Land Rover|Porsche|Jaguar|Maserati| Honda|Ferrari|Porsche| Land Rover|Chevrolet)', '0'))
+
+#fran1=sr8.withColumn('franchise_make', regexp_replace('franchise_make', '(Ford|Chevrolet|Honda|Toyota|Jeep|Hyundai|Nissan|Kia|Subaru|Buick|Volkswagen|Mazda|BMW|GMC|Mercedes-Benz|Volvo|Audi|Cadillac|Dodge|Mitsubishi|Land Rover|Porsche|Jaguar|Maserati| Honda|Ferrari|Porsche| Land Rover|Chevrolet)', '0'))
 #fran1.groupby('franchise_make').count().sort('count',ascending=False).collect()
-
-
 
 
 
 #torque
 
-tor1=is_n7.withColumn('torque', translate('torque', ' ', ''))
+tor1=pri2.withColumn('torque', translate('torque', ' ', ''))
 tor2 = tor1.withColumn('torque', substring('torque', 1,3))
 tor3=tor2.withColumn('torque', regexp_replace('torque', '[^\d{3}]', '0'))
 tor4=tor3.withColumn('torque', regexp_replace('torque', '^0[0-4][0-9]', '250'))
