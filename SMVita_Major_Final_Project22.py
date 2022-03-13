@@ -221,14 +221,14 @@ is_n7=is_n6.withColumn('is_new', col('is_new')).na.fill('TRUE')
 # is_n7.groupby('is_new').count().sort('count', ascending=False).collect()
 
 
-# In[ ]:
+#savings_amount
 
 
 sa1 = sr8.withColumn('savings_amount', regexp_replace('savings_amount', '(\d+)', '0'))
 sa1.groupby('savings_amount').count().sort('count', ascending=False).collect()
 
 
-# In[ ]:
+#dealer_zip
 
 
 dea1=sr8.withColumn('dealer_zip', regexp_replace('dealer_zip', '(^[A-Za-z]+)', '43228'))
@@ -237,7 +237,7 @@ dea3=dea2.withColumn("dealer_zip", col("dealer_zip")).na.fill('43228')
 dea4=dea3.withColumn("dealer_zip",col("dealer_zip").cast("double"))
 
 
-# In[ ]:
+#franchise_dealer
 
 
 fra1=dea4.withColumn('franchise_dealer', regexp_replace('franchise_dealer', '(TRUE)', '1'))
@@ -248,7 +248,7 @@ fra5=fra4.withColumn('franchise_dealer', regexp_replace('franchise_dealer', '1',
 fra6=fra5.withColumn('franchise_dealer', regexp_replace('franchise_dealer', '0', 'FALSE'))
 
 
-# In[ ]:
+#owner_count
 
 oc1=fra6.withColumn('owner_count', translate('owner_count', 'in', ''))
 oc2=oc1.withColumn('owner_count', translate('owner_count', ' ', ''))
@@ -263,7 +263,7 @@ oc9=oc8.withColumn("owner_count", col("owner_count")).na.fill(1)
 
 
 
-# In[ ]:
+#wheel_base
 
 wb1=oc9.withColumn('wheelbase', translate('wheelbase', 'in', ''))
 wb2=wb1.withColumn('wheelbase', translate('wheelbase', ' ', ''))
@@ -282,7 +282,7 @@ wb12=wb11.withColumn('wheelbase',col('wheelbase')).na.fill(106)
 
 
 
-# In[ ]:
+#horsepower
 
 hp1=wb12.withColumn('horsepower', translate('horsepower', 'in', ''))
 hp2=hp1.withColumn('horsepower', translate('horsepower', ' ', ''))
@@ -301,7 +301,7 @@ hp14=hp13.withColumn('horsepower',col('horsepower')).na.fill(248)
 
 
 
-# In[ ]:
+#Mileage
 
 mil1=hp14.withColumn('mileage', translate('mileage', 'in', ''))
 mil2=mil1.withColumn('mileage', translate('mileage', ' ', ''))
@@ -315,6 +315,8 @@ mil9=mil8.withColumn("mileage",col("mileage").cast('double'))
 mil10=mil9.withColumn("mileage", col("mileage")).na.fill(31000)
 
 
+
+#seller_rating
 
 sr1=mil10.withColumn('seller_rating', translate('seller_rating', ' ', ''))
 sr2=sr1.withColumn('seller_rating', regexp_replace('seller_rating', '[^(\d\d+)]', '0'))
@@ -330,4 +332,94 @@ sr8=sr7.withColumn('seller_rating', col('seller_rating')).na.fill(4)
 #fran1=list_col1.withColumn('franchise_make', regexp_replace('franchise_make', '(Ford|Chevrolet|Honda|Toyota|Jeep|Hyundai|Nissan|Kia|Subaru|Buick|Volkswagen|Mazda|BMW|GMC|Mercedes-Benz|Volvo|Audi|Cadillac|Dodge|Mitsubishi|Land Rover|Porsche|Jaguar|Maserati| Honda|Ferrari|Porsche| Land Rover|Chevrolet)', '0'))
 #fran1.groupby('franchise_make').count().sort('count',ascending=False).collect()
 
+
+
+
+
+#torque
+
+tor1=is_n7.withColumn('torque', translate('torque', ' ', ''))
+tor2 = tor1.withColumn('torque', substring('torque', 1,3))
+tor3=tor2.withColumn('torque', regexp_replace('torque', '[^\d{3}]', '0'))
+tor4=tor3.withColumn('torque', regexp_replace('torque', '^0[0-4][0-9]', '250'))
+tor5=tor4.withColumn('torque', regexp_replace('torque', '^(\d{1,2})$', '250'))
+tor6=tor5.withColumn("torque",col("torque").cast("double"))
+tor7=tor6.withColumn("torque", col("torque")).na.fill(250)
+
+
+#days_on_market
+
+day1=tor7.withColumn("daysonmarket",col("daysonmarket").cast("double"))
+day2=day1.withColumn("daysonmarket", col("daysonmarket")).na.fill(76)
+
+
+
+
+#engine_displacement
+
+engd1=day2.withColumn('engine_displacement', regexp_replace('engine_displacement', '[^\d{4}]', '0')) 
+engd2=engd1.withColumn('engine_displacement', regexp_replace('engine_displacement', '^(\d{5,3500})', '2970'))
+engd3=engd2.withColumn('engine_displacement', regexp_replace('engine_displacement', '^0[0-9]*$', '2970'))
+engd4=engd3.withColumn('engine_displacement', regexp_replace('engine_displacement', '^[0-9]$', '2970'))
+engd5=engd4.withColumn("engine_displacement",col("engine_displacement").cast("double"))
+engd6=engd5.withColumn("engine_displacement", col("engine_displacement")).na.fill(2970)
+
+
+
+#highway_fuel_economy
+
+
+hig1=engd6.withColumn('highway_fuel_economy', regexp_replace('highway_fuel_economy', '[^\d{3}]', '0')) 
+hig2 = hig1.withColumn('highway_fuel_economy', regexp_replace('highway_fuel_economy', '(\d{4,3000})', '0')) 
+hig3 = hig2.withColumn('highway_fuel_economy', regexp_replace('highway_fuel_economy', '^0', '30'))
+hig4 = hig3.withColumn('highway_fuel_economy', regexp_replace('highway_fuel_economy', '30[0-9]*$', '30'))
+hig5=hig4.withColumn("highway_fuel_economy",col("highway_fuel_economy").cast("double"))
+hig6=hig5.withColumn("highway_fuel_economy", col("highway_fuel_economy")).na.fill(30)
+
+
+
+#wheel_system
+
+whe1=hig6.withColumn('wheel_system', regexp_replace('wheel_system', 'AWD', '1'))
+whe2=whe1.withColumn('wheel_system', regexp_replace('wheel_system', '4WD', '2'))
+whe3=whe2.withColumn('wheel_system', regexp_replace('wheel_system', 'FWD', '3'))
+whe4=whe3.withColumn('wheel_system', regexp_replace('wheel_system', 'RWD', '4'))
+whe5=whe4.withColumn('wheel_system', regexp_replace('wheel_system', '4X2', '5'))
+whe6=whe5.withColumn('wheel_system', regexp_replace('wheel_system', '[^1-5]', '0'))
+whe7=whe6.withColumn('wheel_system', regexp_replace('wheel_system', '(\d{2,3000})', '3')) 
+whe8=whe7.withColumn('wheel_system', regexp_replace('wheel_system', '0', '3'))
+whe9=whe8.withColumn('wheel_system', regexp_replace('wheel_system', '1', 'AWD'))
+whe10=whe9.withColumn('wheel_system', regexp_replace('wheel_system', '2', '4WD'))
+whe11=whe10.withColumn('wheel_system', regexp_replace('wheel_system', '3', 'FWD'))
+whe12=whe11.withColumn('wheel_system', regexp_replace('wheel_system', '^4$', 'RWD'))
+whe13=whe12.withColumn('wheel_system', regexp_replace('wheel_system', '5', '4X2'))
+# whe8=whe7.withColumn("wheel_system",col("wheel_system").cast("double"))
+whe14=whe13.withColumn("wheel_system", col("wheel_system")).na.fill('FWD')
+
+
+
+
+#transmission
+
+tra1=whe14.withColumn('transmission', regexp_replace('transmission', 'CVT', '1')) 
+tra2=tra1.withColumn('transmission', regexp_replace('transmission', 'A', '2')) 
+tra3=tra2.withColumn('transmission', regexp_replace('transmission', 'M', '3'))
+tra4=tra3.withColumn('transmission', regexp_replace('transmission', 'Dual Clutch', '4'))
+tra5=tra4.withColumn('transmission', regexp_replace('transmission', '[^1-4]', '0'))
+tra6=tra5.withColumn('transmission', regexp_replace('transmission', '(\d{2,2500})', '2'))
+tra7=tra6.withColumn('transmission', regexp_replace('transmission', '0', '2'))
+# tra7=tra6.withColumn("transmission",col("transmission").cast("double"))
+tra8=tra7.withColumn("transmission", col("transmission")).na.fill('2')
+tra9=tra8.withColumn('transmission', regexp_replace('transmission', '1', 'CVT')) 
+tra10=tra9.withColumn('transmission', regexp_replace('transmission', '2', 'A')) 
+tra11=tra10.withColumn('transmission', regexp_replace('transmission', '3', 'M'))
+tra12=tra11.withColumn('transmission', regexp_replace('transmission', '4', 'Dual Clutch'))
+
+
+
+
+#listing_color
+
+#list_col1=city3.withColumn('listing_color', regexp_replace('listing_color', '(BLACK|WHITE|SILVER|GRAY|BLUE|RED|GREEN|BROWN|YELLOW|GOLD|ORANGE|PURPLE|TEAL|Black (Charcoal)|Gray|jet black|Black (charcoal)|Charcoal Black)', '0'))
+#list_col1.groupby('listing_color').count().sort('count',ascending=False).collect() 
 
