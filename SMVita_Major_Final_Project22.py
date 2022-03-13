@@ -422,3 +422,88 @@ tra12=tra11.withColumn('transmission', regexp_replace('transmission', '4', 'Dual
 #list_col1=city3.withColumn('listing_color', regexp_replace('listing_color', '(BLACK|WHITE|SILVER|GRAY|BLUE|RED|GREEN|BROWN|YELLOW|GOLD|ORANGE|PURPLE|TEAL|Black (Charcoal)|Gray|jet black|Black (charcoal)|Charcoal Black)', '0'))
 #list_col1.groupby('listing_color').count().sort('count',ascending=False).collect() 
 
+
+
+
+#back_legroom
+
+bac1=tra12.withColumn('back_legroom', translate('back_legroom', 'in', ''))
+bac2=bac1.withColumn('back_legroom', translate('back_legroom', ' ', ''))
+bac3=bac2.withColumn('back_legroom', translate('back_legroom', '.', ' '))
+bac4=bac3.withColumn('back_legroom', regexp_replace('back_legroom', '(\s+\d*\s*)$', ''))    #(\s+\d*\s*)$
+bac5=bac4.withColumn('back_legroom', regexp_replace('back_legroom', '[^\d{2}]', '0'))
+bac6=bac5.withColumn('back_legroom', regexp_replace('back_legroom', '^(\d{3,3000})', '38')) 
+bac7=bac6.withColumn('back_legroom', regexp_replace('back_legroom', "(^0+)", "0"))
+bac8=bac7.withColumn('back_legroom', regexp_replace('back_legroom', '^0$', '38')) 
+bac9=bac8.withColumn('back_legroom', regexp_replace('back_legroom', r'^[0]*', ''))
+bac10=bac9.withColumn('back_legroom',when(bac9.back_legroom<=9,38).otherwise(bac9.back_legroom))
+bac11=bac10.withColumn('back_legroom',col('back_legroom').cast("double"))
+bac12=bac11.withColumn('back_legroom',col('back_legroom')).na.fill(38)
+
+#front_legroom
+
+fro1=bac12.withColumn('front_legroom', translate('front_legroom', 'in', ''))
+fro2=fro1.withColumn('front_legroom', translate('front_legroom', ' ', ''))
+fro3=fro2.withColumn('front_legroom', translate('front_legroom', '.', ' '))
+fro4=fro3.withColumn('front_legroom', regexp_replace('front_legroom', '(\s+\d*\s*)$', ''))    
+fro5=fro4.withColumn('front_legroom', regexp_replace('front_legroom', '[^\d{2}]', '0'))
+fro6=fro5.withColumn('front_legroom', regexp_replace('front_legroom', '^(\d{3,3000})', '40')) 
+fro7=fro6.withColumn('front_legroom', regexp_replace('front_legroom', "(^0+)", "0"))
+fro8=fro7.withColumn('front_legroom', regexp_replace('front_legroom', '^0$', '40')) 
+fro9=fro8.withColumn('front_legroom', regexp_replace('front_legroom', r'^[0]*', ''))
+fro10=fro9.withColumn('front_legroom',when(fro9.front_legroom<=9,40).otherwise(fro9.front_legroom))
+fro11=fro10.withColumn('front_legroom',col('front_legroom').cast("double"))
+fro12=fro11.withColumn('front_legroom',col('front_legroom')).na.fill(40)
+
+
+#height
+
+hei1=fro12.withColumn('height', translate('height', 'in', ''))
+hei2=hei1.withColumn('height', translate('height', ' ', ''))
+hei3=hei2.withColumn('height', translate('height', '.', ' '))
+hei4=hei3.withColumn('height', regexp_replace('height', '(\s+\d*\s*)$', ''))    
+hei5=hei4.withColumn('height', regexp_replace('height', '[^\d{2}]', '0'))
+hei6=hei5.withColumn('height', regexp_replace('height', '^(\d{3,3000})', '66')) 
+hei7=hei6.withColumn('height', regexp_replace('height', "(^0+)", "0"))
+hei8=hei7.withColumn('height', regexp_replace('height', '^0$', '66')) 
+hei9=hei8.withColumn('height', regexp_replace('height', r'^[0]*', ''))
+hei10=hei9.withColumn('height',when(hei9.height<=9,66).otherwise(hei9.height))
+hei11=hei10.withColumn('height',col('height').cast("double"))
+hei12=hei11.withColumn('height',col('height')).na.fill(66)
+
+
+#length
+
+len1=hei12.withColumn('length', translate('length', 'in', ''))
+len2=len1.withColumn('length', translate('length', ' ', ''))
+len3=len2.withColumn('length', translate('length', '.', ' '))
+len4=len3.withColumn('length', regexp_replace('length', '(\s+\d*\s*)$', ''))    
+len5=len4.withColumn('length', regexp_replace('length', '[^\d{3}]', '0'))
+len6=len5.withColumn('length', regexp_replace('length', '^(\d{4,3000})', '231'))
+len7=len6.withColumn('length', regexp_replace('length', '^[0-9]{2}$', '231'))
+len8=len7.withColumn('length', regexp_replace('length', "(^0+)", "0"))
+len9=len8.withColumn('length', regexp_replace('length', '^0$', '231')) 
+len10=len9.withColumn('length', regexp_replace('length', r'^[0]*', ''))
+len11=len10.withColumn('length',when(len10.length<=9,231).otherwise(len10.length))
+len12=len11.withColumn('length',col('length').cast("double"))
+len13=len12.withColumn('length',col('length')).na.fill(231)
+
+#fuel_tank_volume
+
+fue1=len12.withColumn('fuel_tank_volume', translate('fuel_tank_volume', 'gal', ''))
+fue2=fue1.withColumn('fuel_tank_volume', translate('fuel_tank_volume', ' ', ''))
+fue3=fue2.withColumn('fuel_tank_volume', translate('fuel_tank_volume', '.', ' '))
+fue4=fue3.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', '(\s+\d*\s*)$', ''))    
+fue5=fue4.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', '[^\d{2}]', '0'))
+fue6=fue5.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', '^(\d{3,3000})', '26')) 
+fue7=fue6.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', "(^0+)", "0"))
+fue8=fue7.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', '^0$', '26')) 
+fue9=fue8.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', r'^[0]*', ''))
+fue10=fue9.withColumn('fuel_tank_volume',when(fue9.fuel_tank_volume<=9,26).otherwise(fue9.fuel_tank_volume))
+fue11=fue10.withColumn('fuel_tank_volume',col('fuel_tank_volume').cast("double"))
+fue12=fue11.withColumn('fuel_tank_volume',col('fuel_tank_volume')).na.fill(26)
+
+#latitude
+
+#lat1=fue12.withColumn('latitude', regexp_replace('latitude', '[\d\d\.\d\d\d\d*]', '0'))
+#lat1.groupby('latitude').count().sort('count',ascending=False).collect()
