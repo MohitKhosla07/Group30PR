@@ -507,3 +507,102 @@ fue12=fue11.withColumn('fuel_tank_volume',col('fuel_tank_volume')).na.fill(26)
 
 #lat1=fue12.withColumn('latitude', regexp_replace('latitude', '[\d\d\.\d\d\d\d*]', '0'))
 #lat1.groupby('latitude').count().sort('count',ascending=False).collect()
+
+
+#body_type
+
+bod1=fue12.withColumn('body_type', regexp_replace('body_type', 'Coupe', '1')) 
+bod2=bod1.withColumn('body_type', regexp_replace('body_type', 'Convertible', '2')) 
+bod3=bod2.withColumn('body_type', regexp_replace('body_type', 'Wagon', '3'))
+bod4=bod3.withColumn('body_type', regexp_replace('body_type', 'Sedan', '4'))
+bod5=bod4.withColumn('body_type', regexp_replace('body_type', 'SUV / Crossover', '5'))
+bod6=bod5.withColumn('body_type', regexp_replace('body_type', '[^1-5]', '0'))
+bod7= bod6.withColumn('body_type', regexp_replace('body_type', '(\d{2,3000})', '6')) 
+#bod8=bod7.withColumn("body_type",bod7["body_type"].cast("double"))
+bod8=bod7.withColumn("body_type", col("body_type")).na.fill('6')
+bod9=bod8.withColumn('body_type', regexp_replace('body_type', '1', 'Coupe')) 
+bod10=bod9.withColumn('body_type', regexp_replace('body_type', '2', 'Convertible')) 
+bod11=bod10.withColumn('body_type', regexp_replace('body_type', '3', 'Wagon'))
+bod12=bod11.withColumn('body_type', regexp_replace('body_type', '4', 'Sedan'))
+bod13=bod12.withColumn('body_type', regexp_replace('body_type', '5', 'SUV / Crossover'))
+bod14=bod13.withColumn('body_type', regexp_replace('body_type', '6', 'Other_body'))
+
+#engine_type
+
+eng1=bod14.withColumn('engine_type', regexp_replace('engine_type', 'I5', '1')) 
+eng2=eng1.withColumn('engine_type', regexp_replace('engine_type', 'I5 Diesel', '1'))
+eng3=eng2.withColumn('engine_type', regexp_replace('engine_type', 'I5 Biodiesel', '1'))
+eng4=eng3.withColumn('engine_type', regexp_replace('engine_type', 'V10', '2')) 
+eng5=eng4.withColumn('engine_type', regexp_replace('engine_type', 'V12', '3')) 
+eng6=eng5.withColumn('engine_type', regexp_replace('engine_type', 'V8', '4')) 
+eng7=eng6.withColumn('engine_type', regexp_replace('engine_type', 'V8 Flex Fuel Vehicle', '4')) 
+eng8=eng7.withColumn('engine_type', regexp_replace('engine_type', 'V8 Hybrid', '4')) 
+eng9=eng8.withColumn('engine_type', regexp_replace('engine_type', 'V8 Diesel', '4')) 
+eng10=eng9.withColumn('engine_type', regexp_replace('engine_type', 'V8 Compressed Natural Gas', '4')) 
+eng11=eng10.withColumn('engine_type', regexp_replace('engine_type', 'V6 Diesel', '5')) 
+eng12=eng11.withColumn('engine_type', regexp_replace('engine_type', 'V6', '5')) 
+eng13=eng12.withColumn('engine_type', regexp_replace('engine_type', 'V6 Flex Fuel Vehicle', '5')) 
+eng14=eng13.withColumn('engine_type', regexp_replace('engine_type', 'V6 Hybrid', '5')) 
+eng15=eng13.withColumn('engine_type', regexp_replace('engine_type', 'V6 Biodiesel', '5'))
+eng16=eng15.withColumn('engine_type', regexp_replace('engine_type', 'I4', '6'))
+eng17=eng16.withColumn('engine_type', regexp_replace('engine_type', 'I4 Compressed Natural Gas', '6'))
+eng18=eng17.withColumn('engine_type', regexp_replace('engine_type', 'I4 Flex Fuel Vehicle', '6'))
+eng19=eng18.withColumn('engine_type', regexp_replace('engine_type', 'I4 Hybrid', '6'))
+eng20=eng19.withColumn('engine_type', regexp_replace('engine_type', 'I4 Diesel', '6'))
+eng21=eng20.withColumn('engine_type', regexp_replace('engine_type', '[^1-6]', '0'))
+eng22=eng21.withColumn('engine_type', regexp_replace('engine_type', '(\d{2,3000})', '7'))
+eng23=eng22.withColumn('engine_type', regexp_replace('engine_type', '0', '7'))
+#eng24=eng23.withColumn("engine_type",eng23["engine_type"].cast("double"))
+eng24=eng23.withColumn("engine_type", col("engine_type")).na.fill('7')
+eng25=eng24.withColumn('engine_type', regexp_replace('engine_type', '1', 'I5')) 
+eng26=eng25.withColumn('engine_type', regexp_replace('engine_type', '2', 'V10' )) 
+eng27=eng26.withColumn('engine_type', regexp_replace('engine_type', '3', 'V12')) 
+eng28=eng27.withColumn('engine_type', regexp_replace('engine_type', '^4$', 'V8')) 
+eng29=eng28.withColumn('engine_type', regexp_replace('engine_type', '^5$', 'V6')) 
+eng30=eng29.withColumn('engine_type', regexp_replace('engine_type', '^6$', 'I4')) 
+eng31=eng30.withColumn('engine_type', regexp_replace('engine_type', '7', 'Other_engine')) 
+
+#fuel_type
+
+fue_t1=eng31.withColumn('fuel_type', regexp_replace('fuel_type', 'Electric', '1')) 
+fue_t2=fue_t1.withColumn('fuel_type', regexp_replace('fuel_type', 'Compressed Natural Gas', '2')) 
+fue_t3=fue_t2.withColumn('fuel_type', regexp_replace('fuel_type', 'Hybrid', '3')) 
+fue_t4=fue_t3.withColumn('fuel_type', regexp_replace('fuel_type', 'Flex Fuel Vehicle', '4')) 
+fue_t5=fue_t4.withColumn('fuel_type', regexp_replace('fuel_type', 'Gasoline', '5')) 
+fue_t6=fue_t5.withColumn('fuel_type', regexp_replace('fuel_type', 'Biodiesel', '6')) 
+fue_t7=fue_t6.withColumn('fuel_type', regexp_replace('fuel_type', 'Diesel', '7')) 
+fue_t8=fue_t7.withColumn('fuel_type', regexp_replace('fuel_type', '[^1-7]', '0'))
+fue_t9=fue_t8.withColumn('fuel_type', regexp_replace('fuel_type', '(\d{2,3000})', '8'))
+fue_t10=fue_t9.withColumn('fuel_type', regexp_replace('fuel_type', '0', '8'))
+#fue_t11=fue_t10.withColumn("fuel_type",fue_t10["fuel_type"].cast("double"))
+fue_t11=fue_t10.withColumn("fuel_type", col("fuel_type")).na.fill('8')
+fue_t12=fue_t11.withColumn('fuel_type', regexp_replace('fuel_type', '1', 'Electric')) 
+fue_t13=fue_t12.withColumn('fuel_type', regexp_replace('fuel_type', '2', 'Compressed Natural Gas')) 
+fue_t14=fue_t13.withColumn('fuel_type', regexp_replace('fuel_type', '3', 'Hybrid')) 
+fue_t15=fue_t14.withColumn('fuel_type', regexp_replace('fuel_type', '4', 'Flex Fuel Vehicle')) 
+fue_t16=fue_t15.withColumn('fuel_type', regexp_replace('fuel_type', '5', 'Gasoline')) 
+fue_t17=fue_t16.withColumn('fuel_type', regexp_replace('fuel_type', '6', 'Biodiesel')) 
+fue_t18=fue_t17.withColumn('fuel_type', regexp_replace('fuel_type', '7', 'Diesel'))
+fue_t19=fue_t18.withColumn('fuel_type', regexp_replace('fuel_type', '8', 'Other_fuel'))
+
+#maximum_seating
+
+max_s1=fue_t19.withColumn('maximum_seating', translate('maximum_seating', 'seats', ''))
+max_s2=max_s1.withColumn('maximum_seating', translate('maximum_seating', ' ', ''))
+max_s3=max_s2.withColumn('maximum_seating', regexp_replace('maximum_seating', '(\s+\d+\s+)$', '')) 
+max_s4=max_s3.withColumn('maximum_seating', regexp_replace('maximum_seating', '[^\d{2}]', '0')) 
+max_s5=max_s4.withColumn('maximum_seating', regexp_replace('maximum_seating', '^(\d{2,3000})', '5'))
+max_s6=max_s5.withColumn('maximum_seating', regexp_replace('maximum_seating', '0', '5'))
+max_s7=max_s6.withColumn("maximum_seating",max_s6["maximum_seating"].cast("double"))
+max_s8=max_s7.withColumn("maximum_seating", col("maximum_seating")).na.fill(5)
+
+#city_fuel_economy
+
+city1=max_s8.withColumn('city_fuel_economy', regexp_replace('city_fuel_economy', '^(\d{3,3000})', '22'))
+city2=city1.withColumn("city_fuel_economy",city1["city_fuel_economy"].cast("double"))
+city3=city2.withColumn("city_fuel_economy", col("city_fuel_economy")).na.fill(22)
+
+#longitude
+
+#lon1=city3.withColumn('longitude', regexp_replace('longitude', '[-\d\d\.\d\d\d\d]', '0'))
+#lon1.groupby('longitude').count().sort('count',ascending=False).collect() 
