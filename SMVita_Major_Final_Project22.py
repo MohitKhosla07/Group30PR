@@ -326,6 +326,8 @@ sr7=sr6.withColumn('seller_rating',col('seller_rating').cast('double'))
 sr8=sr7.withColumn('seller_rating', col('seller_rating')).na.fill(4)
 
 
+#price
+
 pri1=sr8.filter(col("price").rlike("^[0-9]{3,8}+$"))
 pri2=pri1.withColumn("price",col("price").cast("double"))
 
@@ -490,7 +492,7 @@ len13=len12.withColumn('length',col('length')).na.fill(231)
 
 #fuel_tank_volume
 
-fue1=len12.withColumn('fuel_tank_volume', translate('fuel_tank_volume', 'gal', ''))
+fue1=len13.withColumn('fuel_tank_volume', translate('fuel_tank_volume', 'gal', ''))
 fue2=fue1.withColumn('fuel_tank_volume', translate('fuel_tank_volume', ' ', ''))
 fue3=fue2.withColumn('fuel_tank_volume', translate('fuel_tank_volume', '.', ' '))
 fue4=fue3.withColumn('fuel_tank_volume', regexp_replace('fuel_tank_volume', '(\s+\d*\s*)$', ''))    
