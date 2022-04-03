@@ -83,3 +83,31 @@ histogram(fra20, 'enginetype_id', bins=15, yname='bodytype_id ')
 
 
 histogram(fra20, 'bodytype_id ', bins=15, yname='price')
+
+
+
+
+plt.figure(figsize=(15,5))
+bodytype_id = pd["bodytype_id "]
+colors = ['#78C850', '#F08030', '#6890F0','#F8D030', '#F85888', '#705898', '#98D8D8']
+sns.boxplot(pd['width'], y=bodytype_id , palette=colors)
+plt.show()
+
+
+plt.figure(figsize=(15,5))
+bodytype_id = pd["bodytype_id "]
+colors = ['#78C850', '#F08030', '#6890F0','#F8D030', '#F85888', '#705898', '#98D8D8']
+sns.boxplot(pd['width'], y=bodytype_id , palette=colors)
+plt.show()
+
+
+plt.figure(figsize=(15,5))
+bodytype_id = pd["enginetype_id"]
+colors = ['#78C850', '#F08030', '#6890F0','#F8D030', '#F85888', '#705898', '#98D8D8']
+sns.boxplot(pd['width'], y=bodytype_id , palette=colors)
+plt.show()
+
+
+sns.pairplot(pd[['maximum_seating', 'mileage', 'owner_count','engine_displacement','torque','transmission_id', 'wheelsystem_id']], diag_kind = 'kde')
+#sns.pairplot(data=pd, x_vars=['maximum_seating', 'mileage', 'owner_count'], kind = 'kde', y_vars='width')
+plt.show()
