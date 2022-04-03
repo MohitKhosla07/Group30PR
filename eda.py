@@ -84,6 +84,8 @@ histogram(fra20, 'enginetype_id', bins=15, yname='bodytype_id ')
 
 histogram(fra20, 'bodytype_id ', bins=15, yname='price')
 
+histogram(fra17, 'enginetype_id', bins=15, yname='price')
+
 
 <<<<<<< HEAD
 
@@ -113,5 +115,5 @@ sns.pairplot(pd[['maximum_seating', 'mileage', 'owner_count','engine_displacemen
 #sns.pairplot(data=pd, x_vars=['maximum_seating', 'mileage', 'owner_count'], kind = 'kde', y_vars='width')
 plt.show()
 =======
-histogram(fra17, 'enginetype_id', bins=15, yname='price')
+
 >>>>>>> 9a67c39101b7670b813da351c05eda8d8f276d40
