@@ -83,3 +83,6 @@ histogram(fra20, 'enginetype_id', bins=15, yname='bodytype_id ')
 
 
 histogram(fra20, 'bodytype_id ', bins=15, yname='price')
+
+
+histogram(fra17, 'enginetype_id', bins=15, yname='price')
