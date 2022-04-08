@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#CODE CHANGES 
-
-#code changes 2
-
+#code change
 # In[1]:
 
 import sys
