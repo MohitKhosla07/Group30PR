@@ -7,7 +7,7 @@
 
 # In[1]:
 
-
+import sys
 get_ipython().system('pip install pyspark')
 
 
@@ -15,6 +15,8 @@ get_ipython().system('pip install pyspark')
 
 
 from pyspark.sql import SparkSession
+from pyspark import SparkContext
+from pyspark.sql.types import*
 
 
 # In[2]:
@@ -22,7 +24,13 @@ from pyspark.sql import SparkSession
 
 spark = SparkSession         .builder         .appName("LogisticRegressionSummary")         .getOrCreate()
 
-
+def main():
+    s3_bucket=sys.argv[1];
+    s3_file=sys.argv[2];
+    s3_location="s3a://{}/{}".format(s3_bucket,s3_file);
+    rawstrokedf = spark.read.format("csv").option("inferSchema","true").option("header","true").load(s3_location);
+    ms=rawstrokedf.groupBy("class").count()
+    ms.coalesce(1).write.format("csv").option("header", "true").save("s3a://{codefilecreation}/{}".format(s3_file.split('.')[0]))
 # In[3]:
 
 
@@ -33,15 +41,15 @@ from pyspark.ml.classification import LogisticRegression
 
 
 #file_location = "E:\BIG DATA WORKSPACE\Mini Project\Data.csv"
-file_type = "csv"
+#file_type = "csv"
 
 # CSV options
-infer_schema = True
-first_row_is_header = False
-delimiter = ","
+#infer_schema = True
+#first_row_is_header = False
+#delimiter = ","
 
 # The applied options are for CSV files. For other file types, these will be ignored.
-rawstrokeDF = spark.read.format(file_type)   .option("inferSchema", infer_schema)   .option("header", first_row_is_header)   .option("sep", delimiter)   .load("E:/Mini Project/data.csv")
+#rawstrokeDF = spark.read.forstrokeDF = spark.read.format(file_type)   .option("inferSmat(file_type)   .option("inferSchema", infer_schema)   .option("header", first_row_is_header)   .option("sep", delimiter)   .load("E:/Mini Project/data.csv")
 
 
 # In[ ]:
