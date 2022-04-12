@@ -1282,13 +1282,13 @@ final_pipeline=pipe.fit(trainDF1)
 # In[182]:
 
 
-final_pipeline.save("s3://carparq/pick")
+final_pipeline.save("s3://parquetfile07/finalPickle123")
 
 
 # In[183]:
 
 
-persistedModel = final_pipeline.load("s3://carparq/pick")
+persistedModel = final_pipeline.load("s3://parquetfile07/finalPickle123")
 
 
 # In[184]:
