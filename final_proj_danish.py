@@ -726,11 +726,11 @@ pipe=Pipeline(stages=[assembler,desicion_tree_reg])
 
 final_pipeline=pipe.fit(trainDF1)
 
- final_pipeline.save("s3://parquetfile07/pick123")
+final_pipeline.save("s3://parquetfile07/pick123")
 
- persistedModel = final_pipeline.load("s3://parquetfile07/pick123")
+persistedModel = final_pipeline.load("s3://parquetfile07/pick123")
 
- predictionsDT11 = persistedModel.transform(testDF1)
+predictionsDT11 = persistedModel.transform(testDF1)
 
 predictionsDT11.select( "price", "prediction").take(5)
 
