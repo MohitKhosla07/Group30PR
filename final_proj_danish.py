@@ -726,51 +726,51 @@ pipe=Pipeline(stages=[assembler,desicion_tree_reg])
 
 final_pipeline=pipe.fit(trainDF1)
 
-# final_pipeline.save("s3://parquetfile07/pick123")
+ final_pipeline.save("s3://parquetfile07/pick123")
 
-# persistedModel = final_pipeline.load("s3://parquetfile07/pick123")
+ persistedModel = final_pipeline.load("s3://parquetfile07/pick123")
 
-# predictionsDT11 = persistedModel.transform(testDF1)
+ predictionsDT11 = persistedModel.transform(testDF1)
 
-# predictionsDT11.select( "price", "prediction").take(5)
+predictionsDT11.select( "price", "prediction").take(5)
 
 """# EVALUATION"""
 
-#from pyspark.ml.evaluation import RegressionEvaluator
-#dt_evaluator = RegressionEvaluator(
-   # labelCol="price", predictionCol="prediction", metricName="rmse")
-#rmse = dt_evaluator.evaluate(predictionsDT11)
-#print("Root Mean Squared Error (RMSE) on test data = %g" % rmse)
+from pyspark.ml.evaluation import RegressionEvaluator
+dt_evaluator = RegressionEvaluator(
+    labelCol="price", predictionCol="prediction", metricName="rmse")
+rmse = dt_evaluator.evaluate(predictionsDT11)
+print("Root Mean Squared Error (RMSE) on test data = %g" % rmse)
 
-#dt_evaluator = RegressionEvaluator(
-    #labelCol="price", predictionCol="prediction", metricName="r2")
-#r2 = dt_evaluator.evaluate(predictionsDT11)
-#print("R2  on test data = %g" % r2)
+dt_evaluator = RegressionEvaluator(
+    labelCol="price", predictionCol="prediction", metricName="r2")
+r2 = dt_evaluator.evaluate(predictionsDT11)
+print("R2  on test data = %g" % r2)
 
-#dt_evaluator = RegressionEvaluator(
-  #  labelCol="price", predictionCol="prediction", metricName="mae")
-#mae = dt_evaluator.evaluate(predictionsDT11)
-#print("Mean Absolute Error (MAE) on test data = %g" % mae)
+dt_evaluator = RegressionEvaluator(
+    labelCol="price", predictionCol="prediction", metricName="mae")
+mae = dt_evaluator.evaluate(predictionsDT11)
+print("Mean Absolute Error (MAE) on test data = %g" % mae)
 
-#dt_evaluator = RegressionEvaluator(
-    #labelCol="price", predictionCol="prediction", metricName="mse")
-#mse = dt_evaluator.evaluate(predictionsDT11)
-#print("Mean square Error (MsE) on test data = %g" % mse)
+dt_evaluator = RegressionEvaluator(
+    labelCol="price", predictionCol="prediction", metricName="mse")
+mse = dt_evaluator.evaluate(predictionsDT11)
+print("Mean square Error (MsE) on test data = %g" % mse)
 
 """# PREDICTION"""
 
-#columns=['back_legroom', 'city_fuel_economy', 'daysonmarket', 'dealer_zip', 'engine_displacement',
-            # 'franchise_dealer', 'front_legroom', 'fuel_tank_volume', 'highway_fuel_economy',
-            # 'maximum_seating', 'mileage', 'owner_count', 'seller_rating', 'torque',
-            # 'width', 'transmission_id', 'wheelsystem_id', 'fueltype_id', 'bodytype_id', 'enginetype_id']
+columns=['back_legroom', 'city_fuel_economy', 'daysonmarket', 'dealer_zip', 'engine_displacement',
+             'franchise_dealer', 'front_legroom', 'fuel_tank_volume', 'highway_fuel_economy',
+             'maximum_seating', 'mileage', 'owner_count', 'seller_rating', 'torque',
+             'width', 'transmission_id', 'wheelsystem_id', 'fueltype_id', 'bodytype_id', 'enginetype_id']
 
-#input=[(38.0,22.0,6.0,10977.0,2970.0,1.0,40.0,26.0,30.0,5.0,5.0,1.0,4.0,250.0,73.0,2.0,3.0,8.0,5.0,7.0)]
+input=[(38.0,22.0,6.0,10977.0,2970.0,1.0,40.0,26.0,30.0,5.0,5.0,1.0,4.0,250.0,73.0,2.0,3.0,8.0,5.0,7.0)]
 
-#input_dataframe= spark.createDataFrame(input, columns)
+input_dataframe= spark.createDataFrame(input, columns)
 
-#predictionsDT12 = persistedModel.transform(input_dataframe)
+predictionsDT12 = persistedModel.transform(input_dataframe)
 
-#predictionsDT12.select( "prediction").show()
+predictionsDT12.select( "prediction").show()
 
 
 
