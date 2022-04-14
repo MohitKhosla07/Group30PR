@@ -557,57 +557,57 @@ rdd_table = df_features.rdd.map(lambda row: row[0:])
 corr_mat=Statistics.corr(rdd_table, method="pearson")
 print(corr_mat)
 
-df2=df1.toPandas()
+#df2=df1.toPandas()
 
 """# VISUALIZATION"""
 
-df2.columns
+#df2.columns
 
-df2.hist(column='width', bins=10)
-
-# Commented out IPython magic to ensure Python compatibility.
-# %matplot plt
-
-df2.hist(column='city_fuel_economy', bins=15)
+#df2.hist(column='width', bins=10)
 
 # Commented out IPython magic to ensure Python compatibility.
 # %matplot plt
 
-from pyspark.sql.functions import desc
+#df2.hist(column='city_fuel_economy', bins=15)
 
-fig = plt.figure(figsize =(5, 5))
+# Commented out IPython magic to ensure Python compatibility.
+# %matplot plt
 
-engDF = df1[['enginetype_id','price']].groupby('enginetype_id').sum('price').sort(desc("sum(price)")).toPandas().head(3)
+#from pyspark.sql.functions import desc
+
+#fig = plt.figure(figsize =(5, 5))
+
+#engDF = df1[['enginetype_id','price']].groupby('enginetype_id').sum('price').sort(desc("sum(price)")).toPandas().head(3)
 # display the top 10 organisation group 
-plt.bar(engDF["enginetype_id"], engDF["sum(price)"])
-plt.title("Top Three Engine type")
-plt.xlabel("enginetype_id")
-plt.ylabel("price")
+#plt.bar(engDF["enginetype_id"], engDF["sum(price)"])
+#plt.title("Top Three Engine type")
+#plt.xlabel("enginetype_id")
+#plt.ylabel("price")
 
 # Commented out IPython magic to ensure Python compatibility.
 # %matplot plt
 
-fig = plt.figure(figsize =(5, 5))
-scat=df2.plot(kind = 'scatter', x = 'fuel_tank_volume', y = 'price')
-plt.show()
+#fig = plt.figure(figsize =(5, 5))
+#scat=df2.plot(kind = 'scatter', x = 'fuel_tank_volume', y = 'price')
+#plt.show()
 
 # Commented out IPython magic to ensure Python compatibility.
 # %matplot plt
 
-plt.figure();
+#plt.figure();
 
-bp = df2.boxplot(column=['front_legroom'])
+#bp = df2.boxplot(column=['front_legroom'])
 
-bp
+#bp
 
 # Commented out IPython magic to ensure Python compatibility.
 # %matplot plt
 
-plt.figure();
+#plt.figure();
 
-bp1 = df2.boxplot(column=['width'])
+#bp1 = df2.boxplot(column=['width'])
 
-bp1
+#bp1
 
 # Commented out IPython magic to ensure Python compatibility.
 # %matplot plt
@@ -696,15 +696,15 @@ va18=va17.withColumn("maximum_seating",col("maximum_seating").cast("double"))
 va19=va18.withColumn("seller_rating",col("seller_rating").cast("double"))
 va20=va19.withColumn("owner_count",col("owner_count").cast("double"))
 
-va20.printSchema()
+#va20.printSchema()
 
 z1=va20.drop('total_outliers')
 
-z1.printSchema()
+#z1.printSchema()
 
-z1.columns
+#z1.columns
 
-z1.take(1)
+#z1.take(1)
 
 """# MODEL"""
 
@@ -725,51 +725,51 @@ pipe=Pipeline(stages=[assembler,desicion_tree_reg])
 
 final_pipeline=pipe.fit(trainDF1)
 
-final_pipeline.save("s3://parquetfile07/pick123")
+final_pipeline.save("s3://parquetfile07/pick1234")
 
-persistedModel = final_pipeline.load("s3://parquetfile07/pick123")
+#persistedModel = final_pipeline.load("s3://parquetfile07/pick1234")
 
-predictionsDT11 = persistedModel.transform(testDF1)
+#predictionsDT11 = persistedModel.transform(testDF1)
 
-predictionsDT11.select( "price", "prediction").take(5)
+#predictionsDT11.select( "price", "prediction").take(5)
 
 """# EVALUATION"""
 
-from pyspark.ml.evaluation import RegressionEvaluator
-dt_evaluator = RegressionEvaluator(
-    labelCol="price", predictionCol="prediction", metricName="rmse")
-rmse = dt_evaluator.evaluate(predictionsDT11)
-print("Root Mean Squared Error (RMSE) on test data = %g" % rmse)
+#from pyspark.ml.evaluation import RegressionEvaluator
+#dt_evaluator = RegressionEvaluator(
+    #labelCol="price", predictionCol="prediction", metricName="rmse")
+# rmse = dt_evaluator.evaluate(predictionsDT11)
+# print("Root Mean Squared Error (RMSE) on test data = %g" % rmse)
 
-dt_evaluator = RegressionEvaluator(
-    labelCol="price", predictionCol="prediction", metricName="r2")
-r2 = dt_evaluator.evaluate(predictionsDT11)
-print("R2  on test data = %g" % r2)
+# dt_evaluator = RegressionEvaluator(
+#     labelCol="price", predictionCol="prediction", metricName="r2")
+# r2 = dt_evaluator.evaluate(predictionsDT11)
+# print("R2  on test data = %g" % r2)
 
-dt_evaluator = RegressionEvaluator(
-    labelCol="price", predictionCol="prediction", metricName="mae")
-mae = dt_evaluator.evaluate(predictionsDT11)
-print("Mean Absolute Error (MAE) on test data = %g" % mae)
+# dt_evaluator = RegressionEvaluator(
+#     labelCol="price", predictionCol="prediction", metricName="mae")
+# mae = dt_evaluator.evaluate(predictionsDT11)
+# print("Mean Absolute Error (MAE) on test data = %g" % mae)
 
-dt_evaluator = RegressionEvaluator(
-    labelCol="price", predictionCol="prediction", metricName="mse")
-mse = dt_evaluator.evaluate(predictionsDT11)
-print("Mean square Error (MsE) on test data = %g" % mse)
+# dt_evaluator = RegressionEvaluator(
+#     labelCol="price", predictionCol="prediction", metricName="mse")
+# mse = dt_evaluator.evaluate(predictionsDT11)
+# print("Mean square Error (MsE) on test data = %g" % mse)
 
-"""# PREDICTION"""
+# """# PREDICTION"""
 
-columns=['back_legroom', 'city_fuel_economy', 'daysonmarket', 'dealer_zip', 'engine_displacement',
-             'franchise_dealer', 'front_legroom', 'fuel_tank_volume', 'highway_fuel_economy',
-             'maximum_seating', 'mileage', 'owner_count', 'seller_rating', 'torque',
-             'width', 'transmission_id', 'wheelsystem_id', 'fueltype_id', 'bodytype_id', 'enginetype_id']
+# columns=['back_legroom', 'city_fuel_economy', 'daysonmarket', 'dealer_zip', 'engine_displacement',
+#              'franchise_dealer', 'front_legroom', 'fuel_tank_volume', 'highway_fuel_economy',
+#              'maximum_seating', 'mileage', 'owner_count', 'seller_rating', 'torque',
+#              'width', 'transmission_id', 'wheelsystem_id', 'fueltype_id', 'bodytype_id', 'enginetype_id']
 
-input=[(38.0,22.0,6.0,10977.0,2970.0,1.0,40.0,26.0,30.0,5.0,5.0,1.0,4.0,250.0,73.0,2.0,3.0,8.0,5.0,7.0)]
+# input=[(38.0,22.0,6.0,10977.0,2970.0,1.0,40.0,26.0,30.0,5.0,5.0,1.0,4.0,250.0,73.0,2.0,3.0,8.0,5.0,7.0)]
 
-input_dataframe= spark.createDataFrame(input, columns)
+# input_dataframe= spark.createDataFrame(input, columns)
 
-predictionsDT12 = persistedModel.transform(input_dataframe)
+# predictionsDT12 = persistedModel.transform(input_dataframe)
 
-predictionsDT12.select( "prediction").show()
+# predictionsDT12.select( "prediction").show()
 
 
 
