@@ -16,7 +16,6 @@ Original file is located at
 from pyspark.sql import SparkSession
 #import warnings
 import numpy as np
-import matplotlib.pyplot as plt
 #%matplotlib inline
 #import seaborn as sns
 from pyspark.sql.functions import when, lit, col, substring, substring_index
@@ -45,7 +44,7 @@ sc.install_pypi_package("matplotlib==3.1.1", "https://pypi.org/simple")
 sc.install_pypi_package("pandas==1.2.2")
 sc.install_pypi_package("statistics")
 """# LOAD DATA """
-
+import matplotlib.pyplot as plt
 data=spark.read.parquet("s3://parquetfile07/usedcars__data.parquet/")
 
 """# EXPLORING DATASET """
