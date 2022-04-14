@@ -10,8 +10,7 @@ Original file is located at
 #!pip install pyspark
 
 """# IMPORT LIBRARIES"""
-
-from pyspark import SparkContext
+from pyspark.context import SparkContext
 sc= SparkContext()
 
 from pyspark.sql import SparkSession
@@ -41,24 +40,24 @@ from pyspark.ml.linalg import DenseVector
 from pyspark.ml.linalg import Vectors
 
 spark = SparkSession.builder.appName("Spark").getOrCreate()
-sc.install_pypi_package("matplotlib==3.1.1", "https://pypi.org/simple")
-sc.install_pypi_package("pandas==1.2.2")
-sc.install_pypi_package("statistics")
+#sc.install_pypi_package("matplotlib==3.1.1", "https://pypi.org/simple")
+#sc.install_pypi_package("pandas==1.2.2")
+#sc.install_pypi_package("statistics")
 """# LOAD DATA """
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 data=spark.read.parquet("s3://parquetfile07/usedcars__data.parquet/")
 
 """# EXPLORING DATASET """
 
-type(data)
+#type(data)
 
-data.count()
+#data.count()
 
-len(data.columns)
+#len(data.columns)
 
-data.printSchema()
+#data.printSchema()
 
-data.columns
+#data.columns
 
 """# REPARTITIONING"""
 
