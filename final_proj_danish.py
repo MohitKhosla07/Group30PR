@@ -11,7 +11,8 @@ Original file is located at
 
 """# IMPORT LIBRARIES"""
 
-
+from pyspark import SparkContext
+sc= SparkContext()
 
 from pyspark.sql import SparkSession
 #import warnings
