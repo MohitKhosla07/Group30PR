@@ -11,9 +11,7 @@ Original file is located at
 
 """# IMPORT LIBRARIES"""
 
-sc.install_pypi_package("matplotlib==3.1.1", "https://pypi.org/simple")
-sc.install_pypi_package("pandas==1.2.2")
-sc.install_pypi_package("statistics")
+
 
 from pyspark.sql import SparkSession
 #import warnings
@@ -43,7 +41,9 @@ from pyspark.ml.linalg import DenseVector
 from pyspark.ml.linalg import Vectors
 
 spark = SparkSession.builder.appName("Spark").getOrCreate()
-
+sc.install_pypi_package("matplotlib==3.1.1", "https://pypi.org/simple")
+sc.install_pypi_package("pandas==1.2.2")
+sc.install_pypi_package("statistics")
 """# LOAD DATA """
 
 data=spark.read.parquet("s3://parquetfile07/usedcars__data.parquet/")
